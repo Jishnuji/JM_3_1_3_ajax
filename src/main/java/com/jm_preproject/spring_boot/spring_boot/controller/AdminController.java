@@ -65,7 +65,7 @@ public class AdminController {
         return "new";
     }
 
-    @PostMapping("/adduser")
+    @PostMapping()
     public String create(@Validated(User.class) @ModelAttribute("user") User user,
                          @RequestParam("authorities") List <String> listId,
                          BindingResult result) {
