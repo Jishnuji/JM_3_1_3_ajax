@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All Users</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            border: 1px solid black;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 15px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+        </tr>
+        <tr th:if="${users.isEmpty()}">
+            <td colspan="5"> No users available </td>
+        </tr>
+        <tr th:each="user : ${users}">
+            <td th:utext="${user.getId()}">id</td>
+            <td th:utext="${user.getUsername()}">name</td>
+            <td><a th:href="@{admin/{id}/edit(id=${user.getId()})}"><input type="submit" value="Edit"/></a></td>
+            <td><form th:method="DELETE" th:action="@{admin/{id}(id=${user.getId()})}" th:object="${user}">
+                <input type="submit" value="Delete"/></form></td>
+        </tr>
+    </table>
+    <p></p>
+    <hr/>
+    <div style="float: left"> <a href="/admin/new"> Create new user</a></div>
+    <div style="margin-left: 200px"><a th:replace="parts/logout :: logout"></a></div>
+
+</div>
+</html>

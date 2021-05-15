@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User`s info</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            border: 1px solid black;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 15px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+        </tr>
+        <tr>
+            <td th:utext="${user.getId()}">id</td>
+            <td th:utext="${user.getUsername()}">name</td>
+        </tr>
+    </table>
+<p th:replace="parts/logout :: logout"></p>
+
+</div>
+</body>
+</html>
