@@ -1,7 +1,7 @@
 package com.jm_preproject.spring_boot.spring_boot.dao;
+
 import com.jm_preproject.spring_boot.spring_boot.model.User;
 import org.springframework.stereotype.Repository;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -11,6 +11,13 @@ import java.util.List;
 public class UserDaoImpl implements UserDao {
     @PersistenceContext
     private EntityManager entityManager;
+
+    @Override
+    public User getUserByEmail(String email) {
+        Query query = entityManager.createQuery("select users from User users where users.email = :emailParam");
+        query.setParameter("emailParam", email);
+        return (User) query.getSingleResult();
+    }
 
     @Override
     public User getUserByName(String name) {

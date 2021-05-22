@@ -13,5 +13,6 @@ public interface UserService extends UserDetailsService {
     void update(User user);
     void delete(Long id);
     User getUserByName(String name);
+    User getUserByEmail(String email);
     Set<Role> getSetOfRolesFromList(List<String> rolesId);
 }

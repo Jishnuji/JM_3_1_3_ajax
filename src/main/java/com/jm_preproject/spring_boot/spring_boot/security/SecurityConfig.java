@@ -44,23 +44,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .formLogin()
+                .loginPage("/login_email.html")
                 .successHandler(new LoginSuccessHandler())
                 .loginProcessingUrl("/login")
-                .usernameParameter("j_username")
-                .passwordParameter("j_password")
-                .permitAll()
+                .usernameParameter("email")
+                .passwordParameter("password")
                 .and()
                 .logout().permitAll()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login")
+                .logoutSuccessUrl("/login_email.html")
                 .and().csrf().disable();
 
         http
                 .authorizeRequests()
-                .antMatchers("/login").anonymous()
-//                .antMatchers("/admin/**").anonymous()
+                .antMatchers("/login_email.html").anonymous()
+//                .antMatchers("/**").anonymous()
                 // защищенные URL
-                .antMatchers("/user").access("hasAnyRole('ADMIN', 'USER')")
+//                .antMatchers("/user").access("hasAnyRole('ADMIN', 'USER')")
                 .antMatchers("/admin/**").access("hasAnyRole('ADMIN')")
                 .antMatchers("/hello").access("hasAnyRole('ADMIN')").anyRequest().authenticated();
     }

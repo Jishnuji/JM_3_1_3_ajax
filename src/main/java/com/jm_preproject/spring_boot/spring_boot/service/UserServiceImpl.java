@@ -5,11 +5,8 @@ import com.jm_preproject.spring_boot.spring_boot.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.jm_preproject.spring_boot.spring_boot.model.User;
 import org.springframework.security.core.userdetails.*;
-//import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.List;
@@ -32,10 +29,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userDao.getUserByName(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userDao.getUserByEmail(email);
         if (user == null) {
-            throw new UsernameNotFoundException(String.format("User '%s' not found", username));
+            throw new UsernameNotFoundException(String.format("User '%s' not found", email));
         }
         return user;
     }
@@ -76,6 +73,12 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User getUserByName(String name) {
         return userDao.getUserByName(name);
+    }
+
+    @Override
+    @Transactional
+    public User getUserByEmail(String email) {
+        return userDao.getUserByEmail(email);
     }
 
     @Override

@@ -5,14 +5,13 @@ import com.jm_preproject.spring_boot.spring_boot.model.User;
 import com.jm_preproject.spring_boot.spring_boot.service.RoleService;
 import com.jm_preproject.spring_boot.spring_boot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-
-//import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -31,56 +30,46 @@ public class AdminController {
     }
 
     @GetMapping("")
-    public String index(Model model) {
+    public String index(Model model, Principal principal) {
         model.addAttribute("users", userService.getUsers());
+        model.addAttribute("roles", roleService.getRoleList());
+        model.addAttribute("log_user", userService.getUserByName(principal.getName()));
         return "index";
     }
 
-    @GetMapping("/{id}/edit")
-    public String edit(@PathVariable Long id, Model model) {
-        model.addAttribute("user", userService.getUserById(id));
-        model.addAttribute("roles", roleService.getRoleList());
-        return "update";
+    @GetMapping("/edit/{id}")
+    @ResponseBody
+    public User getUser (@PathVariable("id") Long id) {
+        return userService.getUserById(id);
     }
 
-    @PatchMapping ("/{id}")
+    @GetMapping("/delete/{id}")
+    @ResponseBody
+    public User deleteUser (@PathVariable("id") Long id) {
+        return userService.getUserById(id);
+    }
+
+    @PatchMapping ("/update")
     public String updateUser(@Validated(User.class) @ModelAttribute("user") User user,
-                             @RequestParam("authorities") List <String> listId,
-                             BindingResult result) {
-        if (result.hasErrors()) {
-            return "error";
-        }
+                             @RequestParam("authorities") List <String> listId) {
         Set<Role> lr = userService.getSetOfRolesFromList(listId);
         user.setRoles(lr);
         userService.update(user);
         return "redirect:/admin";
     }
 
-    @GetMapping("/new")
-    public String newUser(Model model) {
-        List<Role> lr = roleService.getRoleList();
-        System.out.println(lr);
-        model.addAttribute(new User());
-        model.addAttribute("roles", roleService.getRoleList());
-        return "new";
-    }
-
-    @PostMapping()
-    public String create(@Validated(User.class) @ModelAttribute("user") User user,
-                         @RequestParam("authorities") List <String> listId,
-                         BindingResult result) {
-        if (result.hasErrors()) {
-            return "error";
-        }
+    @PostMapping("/new_user")
+    public String createUser(@ModelAttribute("user") User user,
+                         @RequestParam("authorities") List <String> listId) {
         Set<Role> lr = userService.getSetOfRolesFromList(listId);
         user.setRoles(lr);
         userService.save(user);
         return "redirect:/admin";
     }
 
-    @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") Long id) {
-        userService.delete(id);
+    @DeleteMapping("/remove")
+    public String removeUser(@ModelAttribute("user") User user) {
+        userService.delete(user.getId());
         return "redirect:/admin";
     }
 }
