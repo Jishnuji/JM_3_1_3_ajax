@@ -63,10 +63,11 @@
                                 <b>All Users</b>
                             </div>
                             <div class="card-body">
+
                                 <table class="table table-striped">
                                     <thead>
                                     <tr>
-                                        <th scope="col">Id</th>
+                                        <th scope="col">ID</th>
                                         <th scope="col">First Name</th>
                                         <th scope="col">Last Name</th>
                                         <th scope="col">Age</th>
@@ -76,122 +77,71 @@
                                         <th scope="col">Delete</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
-
-                                    <th:block th:each="user : ${users}">
-                                        <tr>
-                                            <td th:utext="${user.id}"></td>
-                                            <td th:utext="${user.username}"></td>
-                                            <td th:utext="${user.lastname}"></td>
-                                            <td th:utext="${user.age}"></td>
-                                            <td th:utext="${user.email}"></td>
-                                            <td th:utext="${user.getCleanedRoles()}"></td>
-                                            <td><a th:href="@{admin/edit/{id}(id=${user.id})}" role="button"
-                                                   class="btn btnEdit btn-info">Edit</a></td>
-                                            <td><a th:href="@{admin/delete/{id}(id=${user.id})}" role="button"
-                                                   class="btn btnDelete btn-danger" data-toggle="modal">Delete</a></td>
-                                        </tr>
-                                    </th:block>
-
-                                    </tbody>
+                                    <tbody id="usersData"></tbody>
                                 </table>
+
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- HTML-код модального окна редактирования данных пользователя-->
-                <div class="modal fade" id="editModal"
-                     tabindex="-1" role="dialog"
-                     aria-labelledby="editModalLabel"
-                     aria-hidden="true">
-                    <form th:action="@{admin/update}"
-                          th:method="PATCH">
+                <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                    <form class="form-singin form-horizontal" id="userEditModal">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">
-                                        Edit
-                                        user</h5>
-
-                                    <button type="button" class="close"
-                                            data-dismiss="modal"
-                                            aria-label="Close">
+                                    <h5 class="modal-title" id="exampleModalLabel">Edit user</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
 
                                     <div class="form-group">
-                                        <label for="idEdit"
-                                               class="col-form-label">Id</label>
-                                        <input type="text" class="form-control"
-                                               id="idEdit"
-                                               name="id"
-                                               disabled>
-                                        <input type="text" class="form-control"
-                                               id="idEditHidden"
-                                               name="id"
-                                               hidden="hidden">
+                                        <label for="idEdit" class="col-form-label">ID</label>
+                                        <input type="text" class="form-control" id="idEdit" name="id" disabled>
+                                        <input type="text" class="form-control" id="idEditHidden" name="id" hidden="hidden">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="usernameEdit"
-                                               class="col-form-label">First
-                                            name</label>
-                                        <input type="text" class="form-control"
-                                               id="usernameEdit"
-                                               name="username">
+                                        <label for="usernameEdit" class="col-form-label">First name</label>
+                                        <input type="text" class="form-control" id="usernameEdit" name="username">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="lastnameEdit"
-                                               class="col-form-label">Last
-                                            name</label>
-                                        <input type="text" class="form-control"
-                                               id="lastnameEdit" name="lastname">
+                                        <label for="lastnameEdit" class="col-form-label">Last name</label>
+                                        <input type="text" class="form-control" id="lastnameEdit" name="lastname">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="ageEdit"
-                                               class="col-form-label">Age</label>
-                                        <input type="text" class="form-control"
-                                               id="ageEdit" name="age">
+                                        <label for="ageEdit" class="col-form-label">Age</label>
+                                        <input type="text" class="form-control" id="ageEdit" name="age">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="emailEdit"
-                                               class="col-form-label">Email</label>
-                                        <input type="text" class="form-control"
-                                               id="emailEdit" name="email">
+                                        <label for="emailEdit" class="col-form-label">Email</label>
+                                        <input type="text" class="form-control" id="emailEdit" name="email">
                                     </div>
 
                                     <div class="form-group">
                                         <label for="passwordEdit"
                                                class="col-form-label">Password</label>
-                                        <input type="text" class="form-control"
-                                               id="passwordEdit"
-                                               name="password">
+                                        <input type="text" class="form-control" id="passwordEdit" name="password">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="authoritiesEdit"
-                                               class="col-form-label">Role</label>
-                                        <select multiple size="2" class="form-control"
-                                                name="authorities" id="authoritiesEdit">
+                                        <label for="authoritiesEdit" class="col-form-label">Role</label>
+                                        <select multiple size="2" class="form-control" name="authorities" id="authoritiesEdit">
                                             <option value="1" class="form-control">USER</option>
                                             <option value="2" class="form-control">ADMIN</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                            data-dismiss="modal">Close
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
                                     </button>
-                                    <button type="submit" class="btn btn-primary">
-                                        Edit
-                                        user
-                                    </button>
+                                    <button type="button" class="btn btn-primary" id="edit_button" data-dismiss="modal">Edit user</button>
                                 </div>
                             </div>
                         </div>
@@ -199,97 +149,65 @@
                 </div>
 
                 <!-- Модальное окно удаления пользователей-->
-                <div class="modal fade" id="deleteModal"
-                     tabindex="-1"
-                     role="dialog"
-                     aria-labelledby="exampleModalLabel"
-                     aria-hidden="true">
-                    <form th:action="@{admin/remove}"
-                          th:method="DELETE">
+                <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <form>
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="deleteModalLabel">Delete user</h5>
-                                    <button type="button" class="close"
-                                            data-dismiss="modal"
-                                            aria-label="Close">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
 
                                     <div class="form-group">
-                                        <label for="idDelete"
-                                               class="col-form-label">Id</label>
-                                        <input type="text" class="form-control"
-                                               id="idDelete"
-                                               name="id"
-                                               disabled>
-                                        <input type="text" class="form-control"
-                                               id="idDeleteHidden"
-                                               name="id"
-                                                hidden="hidden">
+                                        <label for="idDelete" class="col-form-label">Id</label>
+                                        <input type="text" class="form-control" id="idDelete" name="id" disabled>
+                                        <input type="text" class="form-control" id="idDeleteHidden" name="id" hidden="hidden">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="usernameDelete"
-                                               class="col-form-label">First
-                                            name</label>
-                                        <input type="text" class="form-control"
-                                               id="usernameDelete"
-                                               name="username" disabled>
+                                        <label for="usernameDelete" class="col-form-label">First name</label>
+                                        <input type="text" class="form-control" id="usernameDelete" name="username" disabled>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="lastnameDelete"
-                                               class="col-form-label">Last
-                                            name</label>
-                                        <input type="text" class="form-control"
-                                               id="lastnameDelete" name="lastname" disabled>
+                                        <label for="lastnameDelete" class="col-form-label">Last name</label>
+                                        <input type="text" class="form-control" id="lastnameDelete" name="lastname" disabled>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="ageDelete"
                                                class="col-form-label">Age</label>
-                                        <input type="text" class="form-control"
-                                               id="ageDelete" name="age" disabled>
+                                        <input type="text" class="form-control" id="ageDelete" name="age" disabled>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="emailDelete" class="col-form-label">Email</label>
-                                        <input type="text" class="form-control"
-                                               id="emailDelete" name="email" disabled>
+                                        <input type="text" class="form-control" id="emailDelete" name="email" disabled>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="authoritiesDelete"
                                                class="col-form-label">Role</label>
-                                        <select multiple size="2"
-                                                class="form-control"
-                                                id="authoritiesDelete" disabled
-                                                name="authorities">
+                                        <select multiple size="2" class="form-control" id="authoritiesDelete" disabled name="authorities">
                                             <option value="1" class="form-control">USER</option>
                                             <option value="2" class="form-control">ADMIN</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                            data-dismiss="modal">Close
-                                    </button>
-                                    <button type="submit" class="btn btn-danger">
-                                        Delete
-                                    </button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="delete_button">Delete</button>
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
 
-
                 <!-- HTML-код окна добавления пользователей-->
-                <div class="tab-pane fade" id="nav-profile" role="tabpanel"
-                     aria-labelledby="nav-profile-tab">
+                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                     <div class="tab-content">
                         <div class="card">
                             <div class="card-header">
@@ -297,19 +215,15 @@
                             </div>
                             <div class="card-body" align="center">
                                 <div class="newUser">
-
-                                    <form th:action="@{admin/new_user}" method="POST">
+                                    <form>
                                         <div class="form-group">
                                             <label for="username" class="col-form-label">First name</label>
-                                            <input type="text" id="username"
-                                                   name="username" class="form-control mb-1 col-4"
-                                                   aria-describedby="nameHelp" required>
+                                            <input type="text" id="username" name="username" class="form-control mb-1 col-4" aria-describedby="nameHelp" required>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="lastname" class="col-form-label">Last name</label>
-                                            <input type="text" class="form-control mb-1 col-4" id="lastname" name="lastname"
-                                                   required>
+                                            <input type="text" class="form-control mb-1 col-4" id="lastname" name="lastname" required>
                                         </div>
 
                                         <div class="form-group">
@@ -323,24 +237,20 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="password"
-                                                   class="col-form-label">Password</label>
-                                            <input type="password" class="form-control mb-1 col-4"
-                                                   id="password"
-                                                   name="password" required>
+                                            <label for="password" class="col-form-label">Password</label>
+                                            <input type="password" class="form-control mb-1 col-4" id="password" name="password" required>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="authoritiesAdd"
-                                                   class="col-form-label">Role</label>
+                                            <label for="authoritiesNew" class="col-form-label">Role</label>
                                             <select multiple size="2" class="form-control mb-1 col-4"
-                                                    name="authorities" id="authoritiesAdd" required>
+                                                    name="authorities" id="authoritiesNew" required>
                                                 <option value="1" selected>USER</option>
                                                 <option value="2">ADMIN</option>
                                             </select>
                                         </div>
                                         <div>
-                                            <button type="submit" class="btn btn-success">Add new user</button>
+                                            <button type="button" id="new_user" class="btn btn-success" onclick="openFormForNewUser()">Add new user</button>
                                         </div>
                                     </form>
                                 </div>
@@ -348,6 +258,8 @@
                         </div>
                     </div>
                 </div>
+
+
             </div>
         </div>
     </div>
@@ -366,6 +278,7 @@
         crossorigin="anonymous"></script>
 
 <script type="text/javascript" th:src="@{../main.js}" src="../main.js"></script>
+<script type="text/javascript" th:src="@{../users_dal.js}" src="../users_dal.js"></script>
 
 </body>
 </html>
